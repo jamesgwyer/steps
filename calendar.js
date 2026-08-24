@@ -17,7 +17,7 @@ async function initTimeline() {
             const allDates = Object.keys(data);
             if (allDates.length > 0) {
                 const mostRecentDate = new Date(allDates[0]);
-                const formattedDate = mostRecentDate.toLocaleDateString('en-US', {
+                const formattedDate = mostRecentDate.toLocaleDateString('en-GB', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
@@ -31,7 +31,7 @@ async function initTimeline() {
             const groupedByMonth = {};
             Object.entries(data).forEach(([dateStr, steps]) => {
                 const dateObj = new Date(dateStr);
-                const monthKey = dateObj.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                const monthKey = dateObj.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
                 if (!groupedByMonth[monthKey]) {
                     groupedByMonth[monthKey] = [];
                 }
@@ -41,10 +41,13 @@ async function initTimeline() {
             const monthKeys = Object.keys(groupedByMonth);
             if (monthKeys.length === 0) return;
 
-            // Route logic based on which page we are currently on
+            // Render current month if container exists
             if (currentMonthContainer) {
                 renderMonthGrid(monthKeys[0], groupedByMonth[monthKeys[0]], data, currentMonthContainer, true);
-            } else if (archiveContainer) {
+            }
+
+            // Render archived months independently if container exists
+            if (archiveContainer) {
                 if (monthKeys.length > 1) {
                     for (let i = 1; i < monthKeys.length; i++) {
                         renderMonthGrid(monthKeys[i], groupedByMonth[monthKeys[i]], data, archiveContainer, false);
@@ -68,7 +71,6 @@ function renderMonthGrid(monthTitle, daysInData, fullData, targetContainer, isCu
     const section = document.createElement('section');
     section.className = 'month-section';
 
-    // --- UPDATED: Calculate month total steps ---
     let monthTotalSteps = 0;
 
     const refDate = daysInData[0].dateObj;
@@ -76,7 +78,6 @@ function renderMonthGrid(monthTitle, daysInData, fullData, targetContainer, isCu
     const month = refDate.getMonth();
     const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
     
-    // Create the cells array first so we can calculate the total before making the heading HTML
     const cellsToRender = [];
 
     let startDayIndex = new Date(year, month, 1).getDay();
@@ -91,13 +92,12 @@ function renderMonthGrid(monthTitle, daysInData, fullData, targetContainer, isCu
         const stepCount = fullData[currentStr];
         
         if (stepCount !== undefined) {
-            monthTotalSteps += stepCount; // Add to monthly sum
+            monthTotalSteps += stepCount;
         }
 
         cellsToRender.push({ type: 'day', day, stepCount });
     }
 
-    // --- UPDATED: Create heading layout containing the calculated total ---
     const heading = document.createElement('h1');
     heading.className = 'month-heading';
     heading.style.display = 'flex';
@@ -116,11 +116,9 @@ function renderMonthGrid(monthTitle, daysInData, fullData, targetContainer, isCu
     heading.appendChild(totalSpan);
     section.appendChild(heading);
 
-    // Build the grid element
     const grid = document.createElement('div');
     grid.className = 'days-grid';
 
-    // Append cells to the grid
     cellsToRender.forEach(cellData => {
         const cell = document.createElement('div');
         if (cellData.type === 'empty') {

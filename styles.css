@@ -1,53 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url("https://gwyer.net/styles.css");
 
-:root {
-    --bg: white;
-    --fg: black;
-    --links: rebeccapurple;
-    --code: #eee;
-}
+* { box-sizing: border-box; }
 
-* { scrollbar-color: var(--code) var(--bg); box-sizing: border-box; }
-
-body {
-    color: var(--fg);
-    background-color: var(--bg);
-    font-family:'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 300;
-    margin: 0;
-    min-height: 100%;
-    overflow-wrap: break-word;
-    line-height: 1.5;
-}
-  
-header, main { padding: 1em 2em; }
-article { max-width: 666px; margin: 0 auto; }
-footer {
-    left: 0;
-    bottom: 0;
-    max-width: 100%;
+main {
     padding: 1em 2em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: flex-start;
 }
 
-a { color: var(--links); text-decoration: none; font-weight: 400; }
-a:hover { text-decoration: underline; }
-a.active { color: var(--fg); }
-a.active:hover { text-decoration: none; opacity: 0.5; }
-a.menu { color: var(--fg); opacity: 0.5; }
-a.menu:hover { text-decoration: none; opacity: 1; }
+.month-current {
+    flex: 1 1 500px;
+    min-width: 0;
+}
 
-h1 { display: block; font-size: 1.6rem; margin-bottom: 0.4em; font-weight: 500; }
-h2 { display: block; font-size: 1.3rem; margin-bottom: 1em; font-weight: 400; margin-top: 2em; }
-h3 { display: block; font-size: 1.1rem; margin-bottom: 0.6em; font-weight: 400; }
+.month-archives {
+    flex: 1 1 300px;
+    min-width: 0;
+}
 
-p { margin-bottom: 1rem; font-weight: 300; }
+.month-archives .month-section { margin: 1.5em 0; }
 
-hr {
-    margin: 2rem 0;
-    border-top-width: 1px;
-    color: var(--fg);
-    opacity: 0.25;
+@media (max-width: 1500px) {
+    main {
+        flex-direction: column;
+    }
+
+    .month-current,
+    .month-archives {
+        width: 100%;
+    }
 }
 
 .title { color: var(--fg); text-decoration: none; font-size: 1.5em; font-weight: 600; }
